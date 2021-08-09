@@ -1,6 +1,6 @@
  # Sage Business Cloud Provider for OAuth 2.0 Client
-[![Latest Version](https://img.shields.io/github/release/olsgreen/oauth2-adobe-sign.svg?style=flat-square)](https://github.com/olsgreen/oauth2-adobe-sign/releases)
-[![Tests](https://github.com/olsgreen/oauth2-adobe-sign/workflows/Tests/badge.svg)](https://github.com/olsgreen/oauth2-adobe-sign/actions/runs)
+[![Latest Version](https://img.shields.io/github/release/olsgreen/oauth2-sage-business-cloud.svg?style=flat-square)](https://github.com/olsgreen/oauth2-adobe-sign/releases)
+[![Tests](https://github.com/olsgreen/oauth2-sage-business-cloud/workflows/Tests/badge.svg)](https://github.com/olsgreen/oauth2-sage-business-cloud/actions)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
 
 This package provides Sage Business Cloud OAuth 2.0 support for the PHP League's [OAuth 2.0 Client](https://github.com/thephpleague/oauth2-client).
@@ -17,7 +17,7 @@ composer require olsgreen/oauth2-sage-business-cloud
 
 ## Usage
 
-Usage is the same as The League's OAuth client, using `\Olsgreen\OAuth2\Client\Provider\AdobeSign` as the provider.
+Usage is the same as The League's OAuth client, using `\Olsgreen\OAuth2\Client\Provider\SageBusinessCloud` as the provider.
 
 ### Authorization Code Flow
 
