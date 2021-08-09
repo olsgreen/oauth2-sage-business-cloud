@@ -27,7 +27,7 @@ class User implements ResourceOwnerInterface
     ];
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param array $data
      */
@@ -40,6 +40,7 @@ class User implements ResourceOwnerInterface
      * Mass set object attributes.
      *
      * @param array $data
+     *
      * @return $this]
      */
     public function fill(array $data): User
@@ -58,7 +59,7 @@ class User implements ResourceOwnerInterface
      *
      * @return string|null
      */
-    public function getId():? string
+    public function getId(): ?string
     {
         return $this->id;
     }
