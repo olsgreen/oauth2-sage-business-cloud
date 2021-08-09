@@ -26,8 +26,8 @@ $provider = new Olsgreen\OAuth2\Client\Provider\SageBusinessCloud([
     'clientId'          => '{sage-client-id}',
     'clientSecret'      => '{sage-client-secret}',
     'redirectUri'       => 'https://example.com/callback-url',
-    'locale'            => 'en-GB',
-    'country'           => 'gb',
+    'locale'            => 'en-GB', // Optional
+    'country'           => 'gb', // Optional
 ]);
 
 if (!isset($_GET['code'])) {
@@ -60,26 +60,11 @@ if (!isset($_GET['code'])) {
 
 See https://developer.sage.com/accounting/guides/authenticating/authentication/ for a current list of supported countries and locales.
 
-
-## Provider Quirks
-
-Adobe do not provide an endpoint to retrieve the current user, so `getResourceOwnerDetailsUrl()`, `createResourceOwner()` & `getResourceOwner()` will throw `NotImplmenetedException`.
-
-
 ## Testing
 
 ``` bash
 $ ./vendor/bin/phpunit
 ```
-
-
-## Credits
-
-Originally forked from [kevinm/oauth2-adobe-sign](https://github.com/kevinem/oauth2-adobe-sign).
-
-- [Oliver Green](https://github.com/olsgreen)
-- [All Contributors](https://github.com/thephpleague/oauth2-github/contributors)
-
 
 ## License
 
