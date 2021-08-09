@@ -139,7 +139,7 @@ class SageBusinessCloud extends AbstractProvider
             'country' => $this->country
         ]);
 
-        $params = $params + $additionalParams;
+        $params = array_merge($params, $additionalParams);
 
         return parent::getAuthorizationQuery($params);
     }
@@ -155,8 +155,12 @@ class SageBusinessCloud extends AbstractProvider
     protected function checkResponse(ResponseInterface $response, $data)
     {
         if (!empty($data['error'])) {
-            $message = $data['error'].': '.$data['error_description'];
+            $message = $data['error'];
             throw new IdentityProviderException($message, 0, $data);
+        }
+
+        if ($response->getStatusCode() === 401 || $response->getStatusCode() === 400) {
+            throw new IdentityProviderException($data[0]['$message'], 0, $data);
         }
     }
 
@@ -188,7 +192,7 @@ class SageBusinessCloud extends AbstractProvider
     protected function getAuthorizationHeaders($token = null)
     {
         return [
-            'Access-Token' => $token
+            'Authorization' => 'Bearer ' . ($token instanceof AccessToken ? $token->getToken() : $token)
         ];
     }
 

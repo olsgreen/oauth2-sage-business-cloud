@@ -45,7 +45,7 @@ class User implements ResourceOwnerInterface
     public function fill(array $data): User
     {
         foreach ($data as $key => $value) {
-            if (array_key_exists($key, $this->fillable)) {
+            if (in_array($key, $this->fillable)) {
                 $this->attributes[$key] = $value;
             }
         }

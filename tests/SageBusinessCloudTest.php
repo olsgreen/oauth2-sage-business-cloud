@@ -4,6 +4,7 @@
 namespace Tests;
 
 use GuzzleHttp\Psr7\Request;
+use League\OAuth2\Client\Token\AccessToken;
 use Mockery;
 use Olsgreen\OAuth2\Client\Provider\NotImplementedException;
 use Olsgreen\OAuth2\Client\Provider\SageBusinessCloud;
@@ -41,19 +42,6 @@ class SageBusinessCloudTest extends \PHPUnit\Framework\TestCase
         parent::tearDown();
     }
 
-    /*public function testScopes()
-    {
-        $options = [
-            'scope' => [
-                'user_login:account',
-                'agreement_send:account'
-            ]
-        ];
-
-        $url = $this->provider->getAuthorizationUrl($options);
-        $this->assertStringContainsString(implode('+', $options['scope']), $url);
-    }*/
-
     public function testGetAuthorizationUrl()
     {
         $url = $this->provider->getAuthorizationUrl();
@@ -76,6 +64,7 @@ class SageBusinessCloudTest extends \PHPUnit\Framework\TestCase
         $response = Mockery::mock('Psr\Http\Message\ResponseInterface');
         $response->shouldReceive('getBody')->andReturn(json_encode($accessToken));
         $response->shouldReceive('getHeader')->andReturn(['content-type' => 'json']);
+        $response->shouldReceive('getStatusCode')->andReturn(200);
 
         $client = Mockery::mock('GuzzleHttp\ClientInterface');
         $client->shouldReceive('send')->withArgs(function($request) {
@@ -109,6 +98,7 @@ class SageBusinessCloudTest extends \PHPUnit\Framework\TestCase
         $response = Mockery::mock('Psr\Http\Message\ResponseInterface');
         $response->shouldReceive('getBody')->andReturn(json_encode($accessToken));
         $response->shouldReceive('getHeader')->andReturn(['content-type' => 'json']);
+        $response->shouldReceive('getStatusCode')->andReturn(200);
 
         $client = Mockery::mock('GuzzleHttp\ClientInterface');
         $client->shouldReceive('send')->times(1)->withArgs(function($request) {
@@ -132,19 +122,46 @@ class SageBusinessCloudTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($token->getToken(), 'mock_access_token');
     }
 
-    public function testGetResourceOwnerDetailsUrl()
+    public function testGetResourceOwner()
     {
-        $this->expectException(NotImplementedException::class);
+        $responseBody = [
+            "created_at" => "2021-06-11T08:41:13Z",
+            "updated_at" => "2021-06-11T08:41:13Z",
+            "displayed_as" => "Oliver Green",
+            "id" => "424e917f7a814a35933b0104ccdfe880",
+            "first_name" => "Oliver",
+            "last_name" => "Green",
+            "initials" => "OG",
+            "email" => "oliver@boxedcode.co.uk",
+            "locale" => "en-GB",
+        ];
 
-        $accessToken = Mockery::mock('League\OAuth2\Client\Token\AccessToken');
-        $res = $this->provider->getResourceOwnerDetailsUrl($accessToken);
-    }
+        $accessToken = [
+            'access_token' => 'mock_access_token'
+        ];
 
-    public function testCreateResourceOwner()
-    {
-        $this->expectException(NotImplementedException::class);
+        $response = Mockery::mock('Psr\Http\Message\ResponseInterface');
+        $response->shouldReceive('getBody')->andReturn(json_encode($responseBody));
+        $response->shouldReceive('getHeader')->andReturn(['content-type' => 'json']);
+        $response->shouldReceive('getStatusCode')->andReturn(200);
 
-        $accessToken = Mockery::mock('League\OAuth2\Client\Token\AccessToken');
-        $res = $this->provider->getResourceOwner($accessToken);
+        $client = Mockery::mock('GuzzleHttp\ClientInterface');
+        $client->shouldReceive('send')->times(1)->withArgs(function ($request) {
+            $uri = $request->getUri();
+
+            $this->assertEquals('api.accounting.sage.com', $uri->getHost());
+            $this->assertEquals('/v3.1/user', $uri->getPath());
+
+            $this->assertEquals('Bearer mock_access_token', $request->getHeader('Authorization')[0]);
+
+            return true;
+        })->andReturn($response);
+        $this->provider->setHttpClient($client);
+
+        $token = new AccessToken($accessToken);
+
+        $user = $this->provider->getResourceOwner($token);
+
+        $this->assertEquals($user->toArray(), $responseBody);
     }
 }
