@@ -1,0 +1,29 @@
+{
+  "name": "olsgreen/oauth2-sage-business-cloud",
+  "description": "Sage Business Cloud OAuth 2.0 Client Provider for The PHP League OAuth2-Client",
+  "require": {
+    "php": "^7.4 || ^8.0",
+    "league/oauth2-client": "^2.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^7.5.20 || ^9.3",
+    "mockery/mockery": "^1.3"
+  },
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Oliver Green",
+      "email": "green2go@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Olsgreen\\OAuth2\\Client\\Provider\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/"
+    }
+  }
+}
