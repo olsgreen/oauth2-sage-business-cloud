@@ -1,17 +1,13 @@
 <?php
 
-
 namespace Tests;
 
-use GuzzleHttp\Psr7\Request;
 use League\OAuth2\Client\Token\AccessToken;
 use Mockery;
-use Olsgreen\OAuth2\Client\Provider\NotImplementedException;
 use Olsgreen\OAuth2\Client\Provider\SageBusinessCloud;
 
 /**
- * Class AdobeSignTest
- * @package Tests
+ * Class AdobeSignTest.
  */
 class SageBusinessCloudTest extends \PHPUnit\Framework\TestCase
 {
@@ -27,12 +23,12 @@ class SageBusinessCloudTest extends \PHPUnit\Framework\TestCase
     protected function setUp(): void
     {
         $this->provider = new SageBusinessCloud([
-            'clientId' => 'mock_client_id',
+            'clientId'     => 'mock_client_id',
             'clientSecret' => 'mock_client_secret',
-            'redirectUri' => 'none',
-            'scope' => 'full_access',
-            'country' => 'gb',
-            'locale' => 'en-GB',
+            'redirectUri'  => 'none',
+            'scope'        => 'full_access',
+            'country'      => 'gb',
+            'locale'       => 'en-GB',
         ]);
     }
 
@@ -58,7 +54,7 @@ class SageBusinessCloudTest extends \PHPUnit\Framework\TestCase
     public function testGetAccessToken()
     {
         $accessToken = [
-            'access_token' => 'mock_access_token'
+            'access_token' => 'mock_access_token',
         ];
 
         $response = Mockery::mock('Psr\Http\Message\ResponseInterface');
@@ -67,7 +63,7 @@ class SageBusinessCloudTest extends \PHPUnit\Framework\TestCase
         $response->shouldReceive('getStatusCode')->andReturn(200);
 
         $client = Mockery::mock('GuzzleHttp\ClientInterface');
-        $client->shouldReceive('send')->withArgs(function($request) {
+        $client->shouldReceive('send')->withArgs(function ($request) {
             $uri = $request->getUri();
             parse_str((string) $request->getBody(), $body);
 
@@ -92,7 +88,7 @@ class SageBusinessCloudTest extends \PHPUnit\Framework\TestCase
     public function testExchangerRefreshTokenForAccessToken()
     {
         $accessToken = [
-            'access_token' => 'mock_access_token'
+            'access_token' => 'mock_access_token',
         ];
 
         $response = Mockery::mock('Psr\Http\Message\ResponseInterface');
@@ -101,7 +97,7 @@ class SageBusinessCloudTest extends \PHPUnit\Framework\TestCase
         $response->shouldReceive('getStatusCode')->andReturn(200);
 
         $client = Mockery::mock('GuzzleHttp\ClientInterface');
-        $client->shouldReceive('send')->times(1)->withArgs(function($request) {
+        $client->shouldReceive('send')->times(1)->withArgs(function ($request) {
             $uri = $request->getUri();
             parse_str((string) $request->getBody(), $body);
 
@@ -125,19 +121,19 @@ class SageBusinessCloudTest extends \PHPUnit\Framework\TestCase
     public function testGetResourceOwner()
     {
         $responseBody = [
-            "created_at" => "2021-06-11T08:41:13Z",
-            "updated_at" => "2021-06-11T08:41:13Z",
-            "displayed_as" => "Oliver Green",
-            "id" => "424e917f7a814a35933b0104ccdfe880",
-            "first_name" => "Oliver",
-            "last_name" => "Green",
-            "initials" => "OG",
-            "email" => "oliver@boxedcode.co.uk",
-            "locale" => "en-GB",
+            'created_at'   => '2021-06-11T08:41:13Z',
+            'updated_at'   => '2021-06-11T08:41:13Z',
+            'displayed_as' => 'Oliver Green',
+            'id'           => '424e917f7a814a35933b0104ccdfe880',
+            'first_name'   => 'Oliver',
+            'last_name'    => 'Green',
+            'initials'     => 'OG',
+            'email'        => 'oliver@boxedcode.co.uk',
+            'locale'       => 'en-GB',
         ];
 
         $accessToken = [
-            'access_token' => 'mock_access_token'
+            'access_token' => 'mock_access_token',
         ];
 
         $response = Mockery::mock('Psr\Http\Message\ResponseInterface');

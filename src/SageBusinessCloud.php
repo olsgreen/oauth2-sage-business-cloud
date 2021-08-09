@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Olsgreen\OAuth2\Client\Provider;
 
 use League\OAuth2\Client\Provider\AbstractProvider;
@@ -10,8 +9,7 @@ use League\OAuth2\Client\Token\AccessToken;
 use Psr\Http\Message\ResponseInterface;
 
 /**
- * Class SageBusinessCloud
- * @package Olsgreen\OAuth2\Client
+ * Class SageBusinessCloud.
  */
 class SageBusinessCloud extends AbstractProvider
 {
@@ -32,6 +30,7 @@ class SageBusinessCloud extends AbstractProvider
 
     /**
      * AdobeSign constructor.
+     *
      * @param array $options
      * @param array $collaborators
      */
@@ -61,7 +60,7 @@ class SageBusinessCloud extends AbstractProvider
      */
     public function getBaseAuthorizationUrl()
     {
-        return "https://www.sageone.com/oauth2/auth/central";
+        return 'https://www.sageone.com/oauth2/auth/central';
     }
 
     /**
@@ -70,11 +69,12 @@ class SageBusinessCloud extends AbstractProvider
      * Eg. https://oauth.service.com/token
      *
      * @param array $params
+     *
      * @return string
      */
     public function getBaseAccessTokenUrl(array $params)
     {
-        return "https://oauth.accounting.sage.com/token";
+        return 'https://oauth.accounting.sage.com/token';
     }
 
     /**
@@ -98,13 +98,14 @@ class SageBusinessCloud extends AbstractProvider
      */
     public function getBaseRevokeTokenUrl()
     {
-        return "https://oauth.accounting.sage.com/revoke";
+        return 'https://oauth.accounting.sage.com/revoke';
     }
 
     /**
      * Returns the URL for requesting the resource owner's details.
      *
      * @param AccessToken $token
+     *
      * @return string
      */
     public function getResourceOwnerDetailsUrl(AccessToken $token)
@@ -129,14 +130,15 @@ class SageBusinessCloud extends AbstractProvider
      * Builds the authorization URL's query string.
      * Override parent getAuthorizationQuery to add additional parameters.
      *
-     * @param  array $params Query parameters
+     * @param array $params Query parameters
+     *
      * @return string Query string
      */
     protected function getAuthorizationQuery(array $params)
     {
         $additionalParams = array_filter([
-            'locale' => $this->locale,
-            'country' => $this->country
+            'locale'  => $this->locale,
+            'country' => $this->country,
         ]);
 
         $params = array_merge($params, $additionalParams);
@@ -147,15 +149,18 @@ class SageBusinessCloud extends AbstractProvider
     /**
      * Checks a provider response for errors.
      *
+     * @param ResponseInterface $response
+     * @param array|string      $data     Parsed response data
+     *
      * @throws IdentityProviderException
-     * @param  ResponseInterface $response
-     * @param  array|string $data Parsed response data
+     *
      * @return void
      */
     protected function checkResponse(ResponseInterface $response, $data)
     {
         if (!empty($data['error'])) {
             $message = $data['error'];
+
             throw new IdentityProviderException($message, 0, $data);
         }
 
@@ -168,8 +173,9 @@ class SageBusinessCloud extends AbstractProvider
      * Generates a resource owner object from a successful resource owner
      * details request.
      *
-     * @param  array $response
-     * @param  AccessToken $token
+     * @param array       $response
+     * @param AccessToken $token
+     *
      * @return ResourceOwnerInterface
      */
     protected function createResourceOwner(array $response, AccessToken $token)
@@ -186,13 +192,14 @@ class SageBusinessCloud extends AbstractProvider
      * No default is provided, providers must overload this method to activate
      * authorization headers.
      *
-     * @param  mixed|null $token Either a string or an access token instance
+     * @param mixed|null $token Either a string or an access token instance
+     *
      * @return array
      */
     protected function getAuthorizationHeaders($token = null)
     {
         return [
-            'Authorization' => 'Bearer ' . ($token instanceof AccessToken ? $token->getToken() : $token)
+            'Authorization' => 'Bearer '.($token instanceof AccessToken ? $token->getToken() : $token),
         ];
     }
 
@@ -200,6 +207,7 @@ class SageBusinessCloud extends AbstractProvider
      * Returns the full URL to use when requesting an access token.
      *
      * @param array $params Query parameters
+     *
      * @return string
      */
     protected function getAccessTokenUrl(array $params)
